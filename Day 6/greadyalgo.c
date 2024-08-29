@@ -1,6 +1,4 @@
 #include <stdio.h>
-
-
 typedef struct {
     int item_id;
     float item_profit;
@@ -26,7 +24,7 @@ void heapify(ITEM arr[], int n, int i) {
 
     if (right < n && arr[right].profit_weight_ratio > arr[largest].profit_weight_ratio)
         largest = right;
-
+    
     if (largest != i) {
         swap(&arr[i], &arr[largest]);
         heapify(arr, n, largest);
