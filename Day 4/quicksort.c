@@ -1,38 +1,43 @@
 #include <stdio.h>
 #include <stdlib.h>
-#include <string.h>
 #include <time.h>
 
 int quicksort(int arr[], int low, int high, int *comparisons, int random_pivot, int descending);
 int partition(int arr[], int low, int high, int *comparisons, int random_pivot, int descending);
-int read_file(const char *filename, int arr[], int *size);
-void write_file(const char *filename, int arr[], int size);
 int is_best_case(int arr[], int size);
 int is_worst_case(int arr[], int size);
 
 void display_menu();
-void handle_sorting(const char *input_file, int random_pivot, int descending);
+void handle_sorting(int data[], int size, int random_pivot, int descending);
 
 int main() {
     int choice;
-    char *input_file = "a.txt";
+    int size, data[1000];
 
     srand(time(0));
 
+    printf("Enter the number of elements: ");
+    scanf("%d", &size);
+
+    printf("Enter the elements: \n");
+    for (int i = 0; i < size; i++) {
+        scanf("%d", &data[i]);
+    }
+
     while (1) {
         display_menu();
-        printf("Enter your choice \n");
+        printf("Enter your choice: ");
         scanf("%d", &choice);
 
         switch (choice) {
             case 1:
-                handle_sorting(input_file, 0, 0);
+                handle_sorting(data, size, 0, 0);
                 break;
             case 2:
-                handle_sorting(input_file, 0, 1);
+                handle_sorting(data, size, 0, 1);
                 break;
             case 3:
-                handle_sorting(input_file, 1, 0);
+                handle_sorting(data, size, 1, 0);
                 break;
             case 4:
                 printf("Exiting...\n");
@@ -50,19 +55,12 @@ void display_menu() {
     printf("\nMAIN MENU (QUICK SORT)\n");
     printf("1. Ascending Data\n");
     printf("2. Descending Data\n");
-    printf("3. Random Data\n");
-    printf("4. ERROR (EXIT)\n");
+    printf("3. Random Pivot Sorting\n");
+    printf("4. Exit\n");
 }
 
-void handle_sorting(const char *input_file, int random_pivot, int descending) {
-    int data[1000];
-    int size = 0;
+void handle_sorting(int data[], int size, int random_pivot, int descending) {
     int comparisons = 0;
-
-    if (read_file(input_file, data, &size) == -1) {
-        printf("Error reading file: %s\n", input_file);
-        return;
-    }
 
     printf("Before Sorting: ");
     for (int i = 0; i < size; i++) {
@@ -71,8 +69,6 @@ void handle_sorting(const char *input_file, int random_pivot, int descending) {
     printf("\n");
 
     comparisons = quicksort(data, 0, size - 1, &comparisons, random_pivot, descending);
-
-    write_file("out.txt", data, size);
 
     printf("After Sorting: ");
     for (int i = 0; i < size; i++) {
@@ -124,27 +120,6 @@ int partition(int arr[], int low, int high, int *comparisons, int random_pivot, 
     arr[i + 1] = arr[high];
     arr[high] = temp;
     return i + 1;
-}
-
-int read_file(const char *filename, int arr[], int *size) {
-    FILE *file = fopen(filename, "r");
-    if (file == NULL) {
-        return -1;
-    }
-    *size = 0;
-    while (fscanf(file, "%d", &arr[*size]) != EOF) {
-        (*size)++;
-    }
-    fclose(file);
-    return 0;
-}
-
-void write_file(const char *filename, int arr[], int size) {
-    FILE *file = fopen(filename, "w");
-    for (int i = 0; i < size; i++) {
-        fprintf(file, "%d ", arr[i]);
-    }
-    fclose(file);
 }
 
 int is_best_case(int arr[], int size) {

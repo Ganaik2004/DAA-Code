@@ -188,7 +188,7 @@ void displayYoungestWeight(struct person *array, int n) {
         }
     }
 
-    // Convert weight from pounds to kg (1 pound = 0.453592 kg)
+    
     double weightInKg = array[youngestIndex].weight * 0.453592;
     printf("Weight of youngest student: %.2f kg\n", weightInKg);
 }
